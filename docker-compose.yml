@@ -1,0 +1,36 @@
+version: "3.5"
+services:
+  php:
+    container_name: php_laravel
+    image: hello12/php7-nginx:lastest
+    environment:
+      AWS_ACCESS_KEY_ID: AKIASIBNHJK25N5JYPE3
+      AWS_SECRET_ACCESS_KEY:
+      AWS_DEFAULT_REGION: ap-northeast-1
+      AWS_BUCKET: demo-aws-1990
+    volumes:
+      - ./:/var/www/html
+      - ./www.conf:/etc/php7/php-fpm.d/www.conf
+    depends_on:
+      - mysql
+    ports:
+      - 80:80
+    networks:
+      - nginx
+  mysql:
+    container_name: my_sql
+    image: mysql:5.6
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - 3306:3306
+    networks:
+      - nginx
+
+
+networks:
+  nginx:
+    driver: bridge

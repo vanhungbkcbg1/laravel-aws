@@ -1,0 +1,32 @@
+version: "3.5"
+services:
+  nginx:
+    container_name: nginx
+    image: nginx
+    volumes:
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+      - ./:/var/www/html
+    ports:
+      - 80:80
+    networks:
+      - nginx
+    depends_on:
+      - php
+  php:
+    container_name: php
+    image: php:7.3-fpm-alpine
+    working_dir: /var/www/html
+    environment:
+      api_url: test
+      AWS_ACCESS_KEY_ID: AKIASIBNHJK25N5JYPE3
+      AWS_SECRET_ACCESS_KEY: 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
+      AWS_DEFAULT_REGION: ap-northeast-1
+      AWS_BUCKET: demo-aws-1990
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - nginx
+
+networks:
+  nginx:
+    driver: bridge
